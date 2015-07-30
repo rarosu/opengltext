@@ -6,7 +6,7 @@ solution "opengltext"
 	configuration { "x32", "Debug" }
 		targetdir "bin/x86/debug/"
         debugdir "bin/x86/debug/"
-        libdirs "external/lib/x86/"
+        libdirs { "external/lib/x86/" }
 		flags { "Symbols" }
 	configuration { "x32", "Release" }
 		targetdir "bin/x86/release/"
@@ -25,18 +25,25 @@ solution "opengltext"
 		flags { "Optimize" }
 	configuration {}
     
-    includedirs { "external/include/" }
+    includedirs { "external/include/", "external/include/freetype/", "code/opengltext/include/" }
         
     project "opengltext"
         kind "StaticLib"
-        language "C++"
-        files { "code/opengltext/**.hpp", "code/opengltext/**.cpp" }
+        language "C"
+        files { "code/opengltext/**.h", "code/opengltext/**.c" }
         objdir "build/opengltext/obj/"
-        links { "opengl32", "gl3w" }
+        links { "opengl32", "gl3w", "freetype" }
         
     project "opengltext_demo"
         kind "ConsoleApp"
         language "C++"
         files { "code/opengltext_demo/**.hpp", "code/opengltext_demo/**.cpp" }
         objdir "build/opengltext_demo/obj/"
-        links { "opengl32", "gl3w", "SDL2", "SDL2main" }
+        links { "opengltext", "opengl32", "gl3w", "SDL2", "SDL2main", "freetype" }
+        
+    project "opengltext_test"
+        kind "ConsoleApp"
+        language "C++"
+        files { "code/opengltext_test/**.hpp", "code/opengltext_test/**.cpp" }
+        objdir "build/opengltext_test/obj/"
+        links { "opengltext", "opengl32", "gl3w", "SDL2", "SDL2main", "gtest", "gtest_main", "freetype" }
